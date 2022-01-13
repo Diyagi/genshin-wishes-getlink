@@ -47,7 +47,9 @@ if ((doPathExists($path)) -ne $true) {
                 $newProcess.Verb = "runas";
 
                 [System.Diagnostics.Process]::Start($newProcess);
+                exit
             }
+            return
         }
         Write-Host "Make sure to run the game and open the wish history first." -ForegroundColor Red
     }

@@ -25,14 +25,14 @@ if ((doPathExists($path)) -ne $true) {
         # If Path does not exists, then, check if the current user is Admin
         if (-not $isUserAdmin) {
             # If not, inform user and ask for permission to run as Admin
-            Write-Host "This script also detected that the current user is not an Administrator,
-                        since Genshin Impact is required to run as Administrator,
-                        it is possible that this script will also need Admin Rights to
-                        read the files." -ForegroundColor Red
+            Write-Host ("`nThis script also detected that the current user is not an Administrator," +
+                        "`nsince Genshin Impact is required to run as Administrator," +
+                        "`nit is possible that this script will also need Admin Rights to" +
+                        "`nread the files.") -ForegroundColor Red
 
-            Write-Host "`nThis script will now run with Admin Rights,
-                        if you want to continue, press any key,
-                        if you want to Abort, press ESC." -ForegroundColor Red
+            Write-Host ("`nThis script will now run with Admin Rights," +
+                        "`nif you want to continue, press any key," +
+                        "`nif you want to Abort, press ESC.") -ForegroundColor Red
             $keyCode = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 
             if ($keyCode.VirtualKeyCode -eq 27) {
@@ -41,8 +41,9 @@ if ((doPathExists($path)) -ne $true) {
             } else {
                 # To run as admin, the script need to start another Powershell terminal
                 # running it as Admin and run the same script again.
+                # https://stackoverflow.com/a/60216595
                 $newProcess = new-object System.Diagnostics.ProcessStartInfo "PowerShell";
-                $newProcess.Arguments = $myInvocation.MyCommand.Definition;
+                $newProcess.Arguments = "-NoExit " + $myInvocation.MyCommand.Definition;
                 $newProcess.Verb = "runas";
 
                 [System.Diagnostics.Process]::Start($newProcess);
